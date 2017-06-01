@@ -50,6 +50,7 @@
 				var messagesToLoad = data.messages.length<20?0:data.messages.length-20;
 				for(var i =messagesToLoad;i<data.messages.length;i++)
 				{
+					fillString+="<div class='messageContainer'>"
 					if(data.messages[i].is_from_me)
 					{
 						if(data.messages[i].service == "SMS")
@@ -62,6 +63,7 @@
 					{
 						fillString+="<li class = 'recieved'><div>"+data.messages[i].text+"</div></li>";
 					}
+					fillString+="</div>";
 				}
 				document.getElementById("populateMessages").innerHTML = fillString;
 			}
