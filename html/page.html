@@ -13,15 +13,21 @@
 				</ul>
 			</div>
 			<div class="messageView">
-				<ul id="populateMessages">
-				</ul>
-
+				<div class="messageWrapper">
+					<ul id="populateMessages">
+					</ul>
+				</div>
+				<div class="textBox">
+					<textarea id="textContent" style="padding: 0px;	border: none;width:calc(100% - 50px);float:left;"></textarea>
+					<a href="#" onclick="sendMessage()" style="float:left;width:50px; background-color:limegreen;color:white;text-align:center;">send</a>
+				</div>
 			</div>
 		</div>
 
 	</body>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
 	<script>
+		var numToSend = -1;
 		var socket = io.connect('http://localhost:3000');
 
 		socket.on('message', function(data){
@@ -31,7 +37,7 @@
 				var fillString = "";
 				for(var i =0;i<data.messages.length;i++)
 				{
-					fillString+="<a class='plainText' href='#!' onclick=getMessages("+data.messages[i].handle_id+")><li><div>"+ data.messages[i].chat_identifier+"</div><div>"+data.messages[i].text+"</div></li><a><hr>";
+					fillString+="<a class='plainText' href='#' onclick=getMessages('"+data.messages[i].chat_identifier+"')><li><div>"+ data.messages[i].chat_identifier+"</div><div>"+data.messages[i].text+"</div></li><a><hr>";
 				}
 				document.getElementById("populateList").innerHTML = fillString;
 			}
@@ -43,7 +49,12 @@
 				{
 					if(data.messages[i].is_from_me)
 					{
-						fillString+="<li class = 'sent'><div>"+data.messages[i].text+"</div></li>";
+						if(data.messages[i].service == "SMS")
+						{
+							fillString+="<li class = 'sent'><div>"+data.messages[i].text+"</div></li>";
+						}else{
+							fillString+="<li class = 'sentImessage'><div>"+data.messages[i].text+"</div></li>";
+						}
 					}else
 					{
 						fillString+="<li class = 'recieved'><div>"+data.messages[i].text+"</div></li>";
@@ -53,9 +64,22 @@
 			}
 
 		});
-		function getMessages(handleID)
+		function getMessages(chat_identifier)
 		{
-			socket.emit('clientEvent',handleID );
+			numToSend = parseInt(chat_identifier);
+			console.log(chat_identifier);
+			console.log(numToSend);
+			socket.emit('requestMessages',chat_identifier);
+		}
+		function sendMessage()
+		{
+			if(numToSend == -1)
+			{
+				alert("invalid recipient");
+			}
+			var messageInfo = {recipient:numToSend,content:document.getElementById("textContent").value}
+			console.log(messageInfo);
+			socket.emit('sendMessage',messageInfo );
 		}
 	</script>
 </html>

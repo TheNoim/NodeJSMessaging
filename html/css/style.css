@@ -22,8 +22,13 @@ html, body {
 {
 	width: calc(100% - 325px);
 	height: 100%;
-	overflow-y: scroll;
 	float:left;
+	position: relative;
+}
+.messageWrapper
+{
+	height: calc(100% - 30px);
+	overflow-y: scroll;
 }
 ul
 {
@@ -49,6 +54,16 @@ li
 	width: 75%;
 	float: right;
 	margin: 4px 8px;
+	height:auto;
+}
+.sentImessage
+{
+	background-color: dodgerblue;
+	color: white;
+	width: 75%;
+	float: right;
+	margin: 4px 8px;
+	height:auto;
 }
 .recieved
 {
@@ -57,4 +72,12 @@ li
 	width: 75%;
 	float: left;
 	margin: 4px 8px;
+	height:auto;
+}
+.textBox
+{
+	width: 100%;
+	min-height: 30px;
+	position: absolute;
+	bottom: 0px;
 }
