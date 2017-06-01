@@ -85,6 +85,7 @@
 			var messageInfo = {recipient:numToSend,content:document.getElementById("textContent").value}
 			console.log(messageInfo);
 			socket.emit('sendMessage',messageInfo );
+			document.getElementById("textContent").value = "";
 		}
 	</script>
 </html>
