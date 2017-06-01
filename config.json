@@ -1,7 +1,7 @@
-//CHANGE THE IP ADDRESS IN /html/page.html to be you COMPUTERS IP address
 
 {
-	"deviceIP": "deviceIP",
+	"Directions":"CHANGE THE IP ADDRESS IN /html/page.html to be you COMPUTERS IP address",
+	"deviceIP": "iphones ip address",
 	"user": "root",
 	"pass": "alpine"
 }
