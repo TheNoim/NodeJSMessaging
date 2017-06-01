@@ -14,6 +14,10 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var persistantSocket;
 
+
+var configFile = (fs.readFileSync('./config.json', 'utf8'));
+configFile = JSON.parse(configFile);
+
 app.use(express.static(__dirname + '/html'));
 
 app.get('/', function(req, res){
@@ -28,17 +32,11 @@ io.on('connection', function(socket){
 		sendMessagesToClient(data);
 	});
 	socket.on('sendMessage', function(data){
-		var obj = (fs.readFileSync('./config.json', 'utf8'));
-		obj = JSON.parse(obj);
-		var test = {
-			host: obj.host,//Find your devices ip address, settings>wifi>tap connected network> IP Address
-			user: obj.user,
-			pass: obj.pass//Default is alpine, You SHOULD change it
-		}
 		var ssh = new SSH(test);
 		ssh.exec('clsms "'+data.content+'" '+data.recipient).start();
-		console.log(data);
+		//console.log(data);
 	});
+	console.log("connected");
 
 });
 
@@ -49,14 +47,11 @@ server.listen(3000, function(){
 var SSH = require('simple-ssh');
 
 function getSide(callback) {
-	var obj = (fs.readFileSync('./config.json', 'utf8'));
-	obj = JSON.parse(obj);
-	var test = {
-		host: obj.host,//Find your devices ip address, settings>wifi>tap connected network> IP Address
-		user: obj.user,
-		pass: obj.pass//Default is alpine, You SHOULD change it
-	}
-	var ssh = new SSH(test);
+	var ssh = new SSH({
+		host: configFile.deviceIP,//Find your devices ip address, settings>wifi>tap connected network> IP Address
+		user: configFile.user,
+		pass: configFile.pass//Default is alpine, You SHOULD change it
+	});
 
 	var data = '';
 	var error = null;
@@ -86,7 +81,7 @@ function sendSide()
 			console.error(err.stack);
 		} else {
 			var output = [];
-			console.log(data);
+			//console.log(data);
 			data = data.replace(/INSERT INTO table VALUES/g, "‰‰");
 			var currentIndex = 0;
 			var cutLocation;
@@ -123,14 +118,11 @@ function sendSide()
 }
 
 function getMessages(chat_identifier,callback) {
-	var obj = (fs.readFileSync('./config.json', 'utf8'));
-	obj = JSON.parse(obj);
-	var test = {
-		host: obj.host,//Find your devices ip address, settings>wifi>tap connected network> IP Address
-		user: obj.user,
-		pass: obj.pass//Default is alpine, You SHOULD change it
-	}
-	var ssh = new SSH(test);
+	var ssh = new SSH({
+		host: configFile.deviceIP,//Find your devices ip address, settings>wifi>tap connected network> IP Address
+		user: configFile.user,
+		pass: configFile.pass//Default is alpine, You SHOULD change it
+	});
 
 	var data = '';
 	var error = null;
@@ -162,7 +154,7 @@ function sendMessagesToClient(chat_identifier)
 			data = data.replace(/INSERT INTO table VALUES/g, "‰‰");
 			var currentIndex = 0;
 			var cutLocation;
-			console.log(data);
+			//console.log(data);
 			while(data.length>1)
 			{
 				let message = {"is_from_me":null,"service":null,"text":null}
@@ -182,3 +174,19 @@ function sendMessagesToClient(chat_identifier)
 		}
 	});
 }
+
+//TODO
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
+app.use(bodyParser.json());
+
+app.post("/", function (req, res) {
+	//ON DEVICE when message is recieved post, and reload messages for desktop client
+	console.log("time to reload messages");
+});
+
+

@@ -1,5 +1,7 @@
+//CHANGE THE IP ADDRESS IN /html/page.html to be you COMPUTERS IP address
+
 {
-  "host": "Phones IP ADDRESS",
-  "user": "root",
-  "pass": "Password, default is alpine"
+	"deviceIP": "deviceIP",
+	"user": "root",
+	"pass": "alpine"
 }

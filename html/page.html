@@ -27,8 +27,11 @@
 	</body>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
 	<script>
+		var computerIP = "computersIP:3000";
+
+
 		var numToSend = -1;
-		var socket = io.connect('http://localhost:3000');
+		var socket = io.connect(computerIP);
 
 		socket.on('message', function(data){
 			console.log(data);
