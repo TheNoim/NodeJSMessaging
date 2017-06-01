@@ -51,29 +51,42 @@ li
 {
 	background-color: limegreen;
 	color: white;
-	width: 75%;
+	max-width: 75%;
 	float: right;
 	margin: 4px 8px;
 	height:auto;
+	border-radius:4px;
 }
 .sentImessage
 {
 	background-color: dodgerblue;
 	color: white;
-	width: 75%;
+	max-width: 75%;
 	float: right;
 	margin: 4px 8px;
 	height:auto;
+	border-radius:4px;
 }
 .recieved
 {
 	background-color: lightgrey;
 	color: black;
-	width: 75%;
+	max-width: 75%;
 	float: left;
 	margin: 4px 8px;
 	height:auto;
+	border-radius:4px;
 }
+.messageContainer
+{
+	width: 100%;
+}
+.messageContainer::after {
+	content:"";
+	display:block;
+	clear:both;
+}
+
 .textBox
 {
 	width: 100%;
