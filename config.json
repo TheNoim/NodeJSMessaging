@@ -1,0 +1,5 @@
+{
+  "host": "Phones IP ADDRESS",
+  "user": "root",
+  "pass": "Password, default is alpine"
+}
