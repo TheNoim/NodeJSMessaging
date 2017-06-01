@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Messages</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+		<link rel="stylesheet" type="text/css" href="./css/style.css">
+	</head>
+	<body>
+		<div class="pageContainer">
+			<div class="messageList">
+				<ul id="populateList">
+				</ul>
+			</div>
+			<div class="messageView">
+				<ul id="populateMessages">
+				</ul>
+
+			</div>
+		</div>
+
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+	<script>
+		var socket = io.connect('http://localhost:3000');
+
+		socket.on('message', function(data){
+			console.log(data);
+			if(data.content == "side")
+			{
+				var fillString = "";
+				for(var i =0;i<data.messages.length;i++)
+				{
+					fillString+="<a class='plainText' href='#!' onclick=getMessages("+data.messages[i].handle_id+")><li><div>"+ data.messages[i].chat_identifier+"</div><div>"+data.messages[i].text+"</div></li><a><hr>";
+				}
+				document.getElementById("populateList").innerHTML = fillString;
+			}
+			if(data.content == "main")
+			{
+				var fillString = "";
+				var messagesToLoad = data.messages.length<20?0:data.messages.length-20;
+				for(var i =messagesToLoad;i<data.messages.length;i++)
+				{
+					if(data.messages[i].is_from_me)
+					{
+						fillString+="<li class = 'sent'><div>"+data.messages[i].text+"</div></li>";
+					}else
+					{
+						fillString+="<li class = 'recieved'><div>"+data.messages[i].text+"</div></li>";
+					}
+				}
+				document.getElementById("populateMessages").innerHTML = fillString;
+			}
+
+		});
+		function getMessages(handleID)
+		{
+			socket.emit('clientEvent',handleID );
+		}
+	</script>
+</html>

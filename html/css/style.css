@@ -1,0 +1,60 @@
+*{
+	margin: 0;
+}
+html, body {
+	height: 100%;
+}
+.pageContainer
+{
+	height: 100%;
+	width: 100%;
+	background-color: ghostwhite;
+}
+.messageList
+{
+	width: 325px;
+	height: 100%;
+	background-color: rgba(0,0,0,0.1);
+	overflow-y: scroll;
+	float:left;
+}
+.messageView
+{
+	width: calc(100% - 325px);
+	height: 100%;
+	overflow-y: scroll;
+	float:left;
+}
+ul
+{
+	padding: 0px;
+}
+li
+{
+	padding: 5px;
+	list-style-type: none;
+	height: 75px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.plainText
+{
+	text-decoration: none;
+	color:black;
+}
+.sent
+{
+	background-color: limegreen;
+	color: white;
+	width: 75%;
+	float: right;
+	margin: 4px 8px;
+}
+.recieved
+{
+	background-color: lightgrey;
+	color: black;
+	width: 75%;
+	float: left;
+	margin: 4px 8px;
+}
