@@ -1,0 +1,26 @@
+{
+  "name": "nodemessages",
+  "version": "1.0.0",
+  "description": "allow user to send text messages from an iphone from a desktop",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "simple-ssh": "^0.9.0",
+    "socket.io": "^2.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EstebanMagallonPerez/NodeJSMessaging.git"
+  },
+  "author": "Esteban Perez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EstebanMagallonPerez/NodeJSMessaging/issues"
+  },
+  "homepage": "https://github.com/EstebanMagallonPerez/NodeJSMessaging#readme"
+}
