@@ -15,6 +15,11 @@ var io = require('socket.io').listen(server);
 var persistantSocket;
 
 
+
+
+var currentChat = -1;
+
+
 var configFile = (fs.readFileSync('./config.json', 'utf8'));
 configFile = JSON.parse(configFile);
 
@@ -26,17 +31,17 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 	persistantSocket = socket;
-	sendSide();
+	sendSide(1);
 
 	socket.on('requestMessages', function(data){
 		sendMessagesToClient(data);
 	});
 	socket.on('sendMessage', function(data){
 		var ssh = new SSH({
-		host: configFile.deviceIP,//Find your devices ip address, settings>wifi>tap connected network> IP Address
-		user: configFile.user,
-		pass: configFile.pass//Default is alpine, You SHOULD change it
-	});
+			host: configFile.deviceIP,//Find your devices ip address, settings>wifi>tap connected network> IP Address
+			user: configFile.user,
+			pass: configFile.pass//Default is alpine, You SHOULD change it
+		});
 		ssh.exec('clsms "'+data.content+'" '+data.recipient).start();
 		//console.log(data);
 	});
@@ -78,7 +83,7 @@ function getSide(callback) {
 	}).start();
 }
 
-function sendSide()
+function sendSide(source)
 {
 	getSide(function(err, data) {
 		if (err) {
@@ -116,7 +121,13 @@ function sendSide()
 				output.push(message);
 				data = data.substr(cutLocation+4)
 			}
-			persistantSocket.send({content:"side",messages:output});
+			if(source)
+			{
+				persistantSocket.send({content:"side",messages:output});
+			}else
+			{
+				io.sockets.send({content:"side",messages:output});
+			}
 		}
 	});
 }
@@ -150,6 +161,7 @@ function getMessages(chat_identifier,callback) {
 
 function sendMessagesToClient(chat_identifier)
 {
+	currentChat = chat_identifier;
 	getMessages(chat_identifier,function(err, data) {
 		if (err) {
 			console.error(err.stack);
@@ -189,8 +201,15 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post("/", function (req, res) {
+	sendSide(0);
+	if(currentChat == -1)
+	{
+		return;
+	}else
+	{
+		sendMessagesToClient(currentChat);
+	}
 	//ON DEVICE when message is recieved post, and reload messages for desktop client
-	console.log("time to reload messages");
 });
 
 
