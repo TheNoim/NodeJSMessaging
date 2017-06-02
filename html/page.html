@@ -80,10 +80,18 @@
 		{
 			if(numToSend == -1)
 			{
-				alert("invalid recipient");
+				alert("Select a chat to send a message");
+				return;
 			}
+			if (isNaN(numToSend))
+			{
+				alert("I said it was a work in progress right? group chats are not currently supported, and neither are emails");
+
+				return;
+			}
+
+
 			var messageInfo = {recipient:numToSend,content:document.getElementById("textContent").value}
-			console.log(messageInfo);
 			socket.emit('sendMessage',messageInfo );
 			document.getElementById("textContent").value = "";
 		}
