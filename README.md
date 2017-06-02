@@ -1,5 +1,5 @@
 # NodeJSMessaging
-Allow jailbroken IOS 10 devices to view and send text/imessages from a Windows/Linux/Mac device.
+Allow jailbroken IOS 10 devices to view and send text/imessages from a web browser.
 
 ## What you will need
   1. Nodejs installed on your desktop
