@@ -32,7 +32,11 @@ io.on('connection', function(socket){
 		sendMessagesToClient(data);
 	});
 	socket.on('sendMessage', function(data){
-		var ssh = new SSH(test);
+		var ssh = new SSH({
+		host: configFile.deviceIP,//Find your devices ip address, settings>wifi>tap connected network> IP Address
+		user: configFile.user,
+		pass: configFile.pass//Default is alpine, You SHOULD change it
+	});
 		ssh.exec('clsms "'+data.content+'" '+data.recipient).start();
 		//console.log(data);
 	});
