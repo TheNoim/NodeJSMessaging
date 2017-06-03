@@ -1,7 +1,8 @@
 
 {
-	"Directions":"CHANGE THE IP ADDRESS IN /html/page.html to be you COMPUTERS IP address",
-	"deviceIP": "iphones ip address",
+	"deviceIP": "127.0.0.1",
 	"user": "root",
-	"pass": "alpine"
+	"pass": "alpine",
+	"port": 22,
+	"serverPort": 3000
 }

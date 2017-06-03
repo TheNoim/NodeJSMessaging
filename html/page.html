@@ -25,13 +25,11 @@
 		</div>
 
 	</body>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+	<!--Express hosts a version of socket.io. Don't use a cdn-->
+	<script src="/socket.io/socket.io.js"></script>
 	<script>
-		var computerIP = "computersIP:3000";
-
-
 		var numToSend = -1;
-		var socket = io.connect(computerIP);
+		var socket = io(); // Better solution. No need to change any ip
 
 		socket.on('message', function(data){
 			console.log(data);
